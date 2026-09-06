@@ -1,0 +1,100 @@
+{
+    "order": {
+        "domain": "jcb",
+        "customer": "MCDONALD SACRAMENTO",
+
+        "stop1": {
+            "location_name": "Horn Industrial",
+            "address_line1": "123 Main Street",
+            "address_line2": "",
+            "address_line3": "",
+            "city": "Sacramento",
+            "state": "California",
+            "postal_code": "95814",
+            "country": "United States of America",
+            "reference_number": "",
+            "location_code": "",
+            "location_group": "",
+
+            "contact_name": "John Doe",
+            "contact_phone": "1234567890",
+            "contact_email": "john@example.com",
+            "contact_company": "Test Company",
+
+            "requested_earliest_pickup": "09/05/2026 09:00 AM",
+            "requested_latest_pickup": "09/05/2026 05:00 PM",
+            "timezone": "",
+
+            "appointment_required": false,
+            "save_to_address_book": false,
+            "requested_date_lock": false,
+            "requested_time_lock": false,
+
+            "internal_notes": "",
+            "carrier_special_instructions": ""
+        },
+
+        "stop2": {
+            "location_name": "ABC Warehouse",
+            "address_line1": "456 Destination Street",
+            "address_line2": "",
+            "address_line3": "",
+            "city": "Sacramento",
+            "state": "California",
+            "postal_code": "95815",
+            "country": "United States of America",
+
+            "location_code": "",
+            "location_group": "",
+
+            "contact_name": "Jane Doe",
+            "contact_phone": "9876543210",
+            "contact_email": "jane@example.com",
+            "contact_company": "Destination Company",
+
+            "requested_earliest_dropoff": "09/06/2026 09:00 AM",
+            "requested_latest_dropoff": "09/06/2026 05:00 PM",
+            "timezone": "",
+
+            "appointment_required": false,
+            "save_to_address_book": false,
+            "requested_date_lock": false,
+            "requested_time_lock": false,
+
+            "internal_notes": "",
+            "carrier_special_instructions": ""
+        },
+
+        "product": {
+            "description": "ZTS - Mini Excavator",
+            "handling": 1,
+            "weight": 100,
+            "length": 10,
+            "width": 5,
+            "height": 5,
+            "packaging": "",
+            "nmfc_number": "",
+            "freight_class": "500",
+            "linear_feet": "10",
+            "product_number": "",
+            "density": 1,
+            "value": 1000,
+            "sales_order_number": "12345",
+
+            "turnable": false,
+            "stackable": false,
+            "hazardous": false,
+            "refrigerated": false,
+            "save_to_product_list": false
+        },
+
+        "basic_information": {
+            "direction": "Outbound",
+            "billing_terms": "Prepaid",
+            "requested_mode": "Parcel",
+            "equipment_type": "Flatbed",
+            "internal_notes": "Test order",
+            "carrier_notes": "Test carrier notes"
+        }
+    }
+}
