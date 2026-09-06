@@ -31,7 +31,7 @@ def test_create_order(
     # =========================================================================
     # STEP 1: LOGIN
     # =========================================================================
-    with allure.step("\nStep 1: Log in to Rygen application"):
+    with allure.step("/nStep 1: Log in to Rygen application"):
         print("[Step 1/9] Logging in to Rygen...", flush=True)
         login_page.navigate(BASE_URL)
         login_page.login(USERNAME, PASSWORD)
