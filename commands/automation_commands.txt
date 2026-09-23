@@ -1,0 +1,80 @@
+
+# RYGEN AUTOMATION COMMANDS
+
+
+# Go to project folder
+cd C:\Users\i-vihasith.ranga\Downloads\rygen
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+.\venv\Scripts\Activate.ps1
+
+
+# Activate again
+.\venv\Scripts\Activate.ps1
+
+# Install project dependencies
+pip install -r requirements.txt
+
+# Install Playwright browsers
+playwright install
+
+# Run all tests
+pytest
+
+# Run tests with verbose output
+pytest -v
+
+# Run tests with print output
+pytest -v -s
+
+# Run a specific test file
+pytest tests/test_login.py -v
+
+# Run a specific test
+pytest tests/test_login.py::test_create_order -v -s
+
+# Run tests using keyword
+pytest -v -k search
+
+# Run create order test using keyword
+pytest -v -k create_order
+
+# Run tests on Microsoft Edge
+pytest --browser-channel=msedge
+
+# Run tests on Microsoft Edge with verbose output
+pytest -v --browser-channel=msedge
+
+# Generate Allure report
+allure generate reports/allure-results -o reports/allure-report --clean
+
+# Open generated Allure report
+allure open reports/allure-report
+
+# Directly serve Allure results
+allure serve reports/allure-results
+
+
+# GIT COMMANDS
+
+
+# Check Git status
+git status
+
+# Add all changes
+git add .
+
+# Commit changes
+git commit -m "Update automation tests"
+
+# Push changes to main branch
+git push origin main
+
+# Pull latest changes
+git pull origin main
+
+# View commit history
+git log --oneline

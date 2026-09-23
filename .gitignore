@@ -17,3 +17,16 @@ env/
 # IDE
 .vscode/
 .idea/
+__pycache__/
+*.pyc
+
+.venv/
+venv/
+venv1/
+
+reports/logs/
+reports/screenshots/
+reports/allure-results/
+reports/allure-report/
+
+.pytest_cache/

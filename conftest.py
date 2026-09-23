@@ -1,96 +1,94 @@
 import os
 import pytest
 from playwright.sync_api import Page
-
-try:
-    import allure
-except ImportError:
-    allure = None
-
 from pages.login_page import LoginPage
 from pages.domain_page import DomainPage
 from pages.order_page import OrderPage
 from pages.create_order_page import CreateOrderPage
-from utils.test_data_reader import load_test_data
+from utils.test_data_read import load_order_data
 
-
-# =============================================================================
-# Playwright Browser Context Options
-# =============================================================================
-
-@pytest.fixture(scope="session")
-def browser_context_args(browser_context_args):
-    """Set default browser context parameters: standard 1080p viewport and SSL tolerance."""
-    return {
-        **browser_context_args,
-        "viewport": {"width": 1920, "height": 1080},
-        "ignore_https_errors": True,
-    }
-
-
-# =============================================================================
-# Test Data Fixtures
-# =============================================================================
-
-@pytest.fixture(scope="session")
-def order_test_data():
-    """Load order test data from test-data/order_data.json."""
-    data_path = os.path.join(os.path.dirname(__file__), "test-data", "order_data.json")
-    return load_test_data(data_path)
-
-
-# =============================================================================
-# Page Object Fixtures
-# =============================================================================
+# Page Object Fixtures 
 
 @pytest.fixture
 def login_page(page: Page) -> LoginPage:
-    """Fixture providing an instance of LoginPage."""
     return LoginPage(page)
 
 
 @pytest.fixture
 def domain_page(page: Page) -> DomainPage:
-    """Fixture providing an instance of DomainPage."""
     return DomainPage(page)
 
 
 @pytest.fixture
 def order_page(page: Page) -> OrderPage:
-    """Fixture providing an instance of OrderPage."""
     return OrderPage(page)
 
 
 @pytest.fixture
 def create_order_page(page: Page) -> CreateOrderPage:
-    """Fixture providing an instance of CreateOrderPage."""
     return CreateOrderPage(page)
 
 
-# =============================================================================
-# Allure Automatic Screenshot Hook on Failure
-# =============================================================================
+# Test Data Fixtures
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+@pytest.fixture(scope="session")
+def order_data():
+    return load_order_data()
+
+
+
+
+@pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
-    """Automatically capture screenshot and URL if a test step fails and attach to Allure."""
-    outcome = yield
-    rep = outcome.get_result()
 
-    if rep.when == "call" and rep.failed:
+    # Allow Pytest to execute the test first
+    outcome = yield
+
+    # Get the test result
+    report = outcome.get_result()
+
+    # Take screenshot only when the actual test fails
+    if report.when == "call" and report.failed:
+
         page = item.funcargs.get("page")
-        if page and allure:
+        if not page:
+            for fixture_name in ["create_order_page", "order_page", "domain_page", "login_page"]:
+                obj = item.funcargs.get(fixture_name)
+                if obj and hasattr(obj, "page"):
+                    page = obj.page
+                    break
+
+        if page:
             try:
-                screenshot_bytes = page.screenshot()
-                allure.attach(
-                    screenshot_bytes,
-                    name=f"failure_{item.name}",
-                    attachment_type=allure.attachment_type.PNG
-                )
-                allure.attach(
-                    page.url,
-                    name="failure_url",
-                    attachment_type=allure.attachment_type.TEXT
-                )
+                
+                # Create screenshot folder if it doesn't exist
+                os.makedirs("reports/screenshots", exist_ok=True)
+
+                # Get test name
+                test_name = item.name.split("[")[0]
+
+                # Screenshot path
+                screenshot_path = f"reports/screenshots/{test_name}.png"
+
+                # Take screenshot
+                screenshot_bytes = page.screenshot(path=screenshot_path, full_page=True)
+
+                print(f"\nFailure screenshot saved: {screenshot_path}")
+
+                # Attach screenshot to Allure Report
+                try:
+                    import allure
+                    allure.attach(
+                        screenshot_bytes,
+                        name=f"failure_screenshot_{test_name}",
+                        attachment_type=allure.attachment_type.PNG
+                    )
+                    allure.attach(
+                        page.url,
+                        name="failed_page_url",
+                        attachment_type=allure.attachment_type.TEXT
+                    )
+                except Exception:
+                    pass
             except Exception as e:
-                print(f"[conftest] Warning: Could not capture failure screenshot: {e}")
+                print(f"Failed to capture failure screenshot: {e}")

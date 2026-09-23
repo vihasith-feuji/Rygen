@@ -1,20 +1,15 @@
-from pages.base_page import BasePage
+from playwright.sync_api import Page
 
 
-class DomainPage(BasePage):
+class DomainPage:
 
-    def __init__(self, page):
-        super().__init__(page)
+    def __init__(self, page: Page):
+        self.page = page
 
-        self.search_box = page.get_by_role(
-            "searchbox",
-            name="Search"
-        )
+    def search_domain(self, domain_name):
+        search_box = self.page.get_by_placeholder("Search Domains")
+        search_box.fill(domain_name)
 
-        self.jcb_option = page.get_by_text("JCB")
-
-    def search_domain(self, domain):
-        self.fill(self.search_box, domain)
-
-    def select_jcb(self):
-        self.click(self.jcb_option)
+    def select_domain(self, domain_name):
+        item = self.page.locator(f'//span[@class="p-tree-node-label" and text()="{domain_name}"] | //span[text()="{domain_name}"]').first
+        item.click()
